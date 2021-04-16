@@ -1,9 +1,10 @@
 import {NgModule, Optional, SkipSelf,ModuleWithProviders} from '@angular/core';
+import {LoginComponent} from './components/login/login.component';
 
 @NgModule({
 	imports: [],
-	exports: [],
-	declarations: [],
+	exports: [LoginComponent],
+	declarations: [LoginComponent],
 	providers: []
 })
 export class CoreModule {
@@ -22,7 +23,8 @@ export class CoreModule {
                 AuthReadyActions,
                 DataService,
                 UtilityService*/
-            ]
+            ],
+			//
         };
     }
 	constructor(@Optional() @SkipSelf() parentModule: CoreModule) {   
