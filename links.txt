@@ -1,0 +1,1 @@
+basedOn: https://github.com/sevich/my-docker-net-core-test-app/tree/master/Client
