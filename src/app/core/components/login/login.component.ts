@@ -1,10 +1,7 @@
-//import { AuthState } from './../../store/auth.state';
 import { Store, State } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-//import { AuthService } from './../../services/auth.service';
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule,FormControl } from '@angular/forms';
-
 import { LoginModel } from './../../models/login-model';
 import { AccountService } from './../../account/account.service';
 
