@@ -37,18 +37,6 @@ export class LoginComponent implements OnInit {
 	public onLogin(model : LoginModel):void {
 		console.log("login START");
 		console.log("Name:"+model.username);
-		this.accountService.login(model).subscribe(() => {console.log(">>>>>>>>>>>>>>>>login successfull<<<<<<<<<<<<<<<<<")});
-		//(errors: any) => {
-		//this.errors.push(errors['error_description']);
-		//});
-		//this.store.dispatch(
-		//  new actions.LoginRequestedAction({user: this.form.value})
-		//);
-		/*this.authService.signIn(this.form.value)
-		.subscribe(user => {
-		if (user.uid){
-		this.router.navigate(['/home']);
-		}
-		});*/
+		this.accountService.login(model).subscribe(() => {console.log(">>>>>>>>>>>>>>>>login successfull<<<<<<<<<<<<<<<<<")});		
 	}
 }
