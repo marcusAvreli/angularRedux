@@ -7,14 +7,14 @@ import {CoreModule} from  './core/core.module';
 import { HttpModule } from '@angular/http';
 
 import {PublicComponent} from './public/public.component';
-//import {MemberComponent} from './member/member.component';
+import {MemberComponent} from './member/member.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
 	   PublicComponent,
-	//MemberComponent,
+	MemberComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,6 @@
-<div *ngIf="(authState | async)?.loggedIn else showLogin">
- member zone
-</div>
-<div *ngIf="isAuthorized">
+<div *ngIf="isAuthorized else showLogin ">
+<app-member></app-member>
 
-test auth
 </div>
 <ng-template #showLogin>
   <app-public></app-public>
