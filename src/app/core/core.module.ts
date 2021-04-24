@@ -1,8 +1,17 @@
 import {NgModule, Optional, SkipSelf,ModuleWithProviders} from '@angular/core';
 import {LoginComponent} from './components/login/login.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+import { AuthTokenService } from './auth-token/auth-token.service';
+import { LoggedInActions } from './auth-store/logged-in.actions';
+import { AuthTokenActions } from './auth-token/auth-token.actions';
+import { AuthReadyActions } from './auth-store/auth-ready.actions';
+import { AccountService } from './account/account.service';
+//import { DataService } from './services/data.service';
+//import { UtilityService } from './services/utility.service';
 
 @NgModule({
-	imports: [],
+	imports: [FormsModule,ReactiveFormsModule],
 	exports: [LoginComponent],
 	declarations: [LoginComponent],
 	providers: []
@@ -14,15 +23,15 @@ export class CoreModule {
             ngModule: CoreModule,
             providers: [
                 // Providers
-               /* Title,
+               // Title,
                 AuthTokenService,
                 AccountService,
                 LoggedInActions,
-                ProfileActions,
+                //ProfileActions,
                 AuthTokenActions,
                 AuthReadyActions,
-                DataService,
-                UtilityService*/
+                //DataService,
+                //UtilityService*/
             ],
 			//
         };

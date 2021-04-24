@@ -1,7 +1,22 @@
-<div *ngIf="isAuthorized else showLogin">
+<div *ngIf="(authState | async)?.loggedIn else showLogin">
  member zone
+</div>
+<div *ngIf="isAuthorized">
+
+test auth
 </div>
 <ng-template #showLogin>
   <app-public></app-public>
   <app-login></app-login>
 </ng-template>
+ <div  *ngIf="(authState$ | async)?.loggedIn">
+ logged in
+ </div>
+ <div  >
+ {{(authState$| async)?.loggedIn | json}}
+ {{(authState$| async)?.sessionKey | json}}
+ {{(authState$| async)?.test | json}}
+ ffff
+ {{testAuth| json}}
+ </div>
+ 
