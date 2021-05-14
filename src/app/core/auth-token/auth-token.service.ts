@@ -24,6 +24,7 @@ import 'rxjs/add/observable/of';
 //import 'rxjs/add/observable/flatMap';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/throw';
+import { EnvService } from './../../env.service';
 
 
 
@@ -32,44 +33,38 @@ export class AuthTokenService {
     public refreshSubscription$: Subscription;
     //public jwtHelper: JwtHelper = new JwtHelper();
     posts: any;
-
+baseUrl:string;
     constructor(
+	public env: EnvService,
         private http: Http,
         private store: Store<AppState>,
         private loggedInActions: LoggedInActions,
         private authTokenActions: AuthTokenActions,
         private authReadyActions: AuthReadyActions
 		//,private profileActions: ProfileActions
-    ) { }
+    ) { 
+	this.baseUrl=env.apiUrl;
+	console.log(this.baseUrl);
+	}
 
     public getTokens(data: LoginModel/* | RefreshGrantModel*/, grantType: string): Observable<void>{
         // data can be any since it can either be a refresh tokens or login details
         // The request for tokens must be x-www-form-urlencoded
-		console.log("Auth-Token: START");
-       /* const headers = new Headers(
-			{ 'Content-Type': 'application/json' },
-			'Accept', 'application/json'
-			{'Authorization': 'Basic '+window.btoa(data.username+":"+data.password)}
 		
-		
-		
-		);*/
-		console.log("Auth-Token: 1");
-		let headers = new Headers();
-		//Authorization: `Basic ${currentUser.authdata}`
-		//myHeaders.append('Authorization', 'Basic '+getBackObj.user.email+":"+getBackObj.user.password); 
+		let myHeaders = new Headers();		
+		myHeaders.append('Authorization', 'Basic '+window.btoa(data.username+":"+data.password)); 
 
-		//headers.append('Authorization', 'Basic '+window.btoa("test@test2.com"+":"+"1234567")); 
-			headers.append('Authorization', 'Basic '+window.btoa(data.username+":"+data.password)); 
-
-		headers.append('Content-Type', 'application/json'); 
-		headers.append('Accept', 'application/json'); 
-		//headers.append('Access-Control-Allow-Origin', '*');
-		//headers.append('Access-Control-Allow-Methods','GET, POST, PATCH, DELETE, PUT, OPTIONS');
-		//headers.append('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-		//headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+		//headers.append('Content-Type', 'application/json'); 
+		myHeaders.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		myHeaders.append('Accept', 'application/json; charset=UTF-8'); 
+		
+		let myParams = new URLSearchParams();
+		myParams.append('username', 'test@gmail.com');
+		myParams.append('password', 'Password');
+		myParams.append('hsid', 'password');
 		console.log("Auth-Token: 2");
-        const options = new RequestOptions({ headers });
+		
+        const options = new RequestOptions({ headers: myHeaders, params: myParams });
 		//let Observable<any> result = null;
 
         Object.assign(data, {
@@ -77,18 +72,18 @@ export class AuthTokenService {
             // offline_access is required for a refresh token
             scope: ['openid offline_access']
         });
-		//this.http.post('http://localhost:8080/gameTournament/rest/users/login', null, options).map(res => console.log(res.json()));
-		const request = this.http.post('http://localhost:8080/gameTournament/rest/users/login', null, options);
-//request.subscribe();
-//request.subscribe(val => this.posts = val);
-//this.posts= request.map(res => res.json());
+/*		
+		let body = new FormData();
+body.append('username', 'emailId');
+body.append('password', 'xyz');
+*/
+//let body = "username=body&password=body";
 
-console.log("Auth-Token: 3"+JSON.stringify(this.posts));
-        //return this.http.post('http://localhost:8080/gameTournament/rest/users/login', this.encodeObjectToParams(data), options)
-		//return this.http.post('http://localhost:8080/gameTournament1/rest/users/login1', null, options).map(res => res.json());
+let body = `username=${data.username}&password=${data.password}`;
+		const request = this.http.post(this.baseUrl+"/sessions/login", body, options);
+		console.log("Auth-Token: 3");		
 		
-		//this.http.post('http://test', null, options).map(res => res.json());
-		return this.http.post('http://localhost:8080/gameTournament/rest/users/login', null, options).map(res => res.json())
+		return request.map(res => res.json())
            .map((tokens: AuthTokenModel) => {
 				console.log("Auth-token: 4");
                 const now = new Date();
@@ -102,13 +97,26 @@ console.log("Auth-Token: 3"+JSON.stringify(this.posts));
 
                 localStorage.setItem('auth-tokens', JSON.stringify(tokens));
                 this.store.dispatch(this.authReadyActions.ready());
-            });//.subscribe();
+            });
 
     }
 
     public deleteTokens() {
+		const tokensString = localStorage.getItem('auth-tokens');
+		 const tokensModel = tokensString === null ? null : JSON.parse(tokensString);
+		 const sessionKey = tokensModel.sessionKey;
         localStorage.removeItem('auth-tokens');
-        this.store.dispatch(this.authTokenActions.delete());
+		
+		let headers = new Headers();		
+		//headers.append('Authorization', 'Basic '+window.btoa(data.username+":"+data.password)); 
+console.log("DeleteTokens. SessionKey: "+sessionKey);
+		headers.append('Content-Type', 'application/json'); 
+		headers.append('Accept', 'application/json'); 
+		headers.append('session-key', sessionKey); 
+		 const options = new RequestOptions({ headers });
+		   this.store.dispatch(this.authTokenActions.delete());
+		return this.http.post('http://localhost:8080/gameTournament/rest/users/logout', null, options).map(res => res.json());
+      
     }
 
     public unsubscribeRefresh() {

@@ -12,6 +12,7 @@ import { Store } from '@ngrx/store';
 import { AuthState } from './../auth/store/auth.state';
 import * as actions from './../auth/store/auth.actions';
 import * as states from './../ngrx/reducers';*/
+import { AccountService } from './../core/account/account.service';
 import * as Rx from 'RxJS';
 
 @Component({
@@ -23,7 +24,7 @@ import * as Rx from 'RxJS';
 export class MemberComponent implements OnInit, OnDestroy {
  // user$: Observable<any>;
 
-	 constructor(/*,private router: Router private store: Store<states.AppState>*/) { 
+	 constructor( public accountService: AccountService,/*,private router: Router private store: Store<states.AppState>*/) { 
   }
    
 
@@ -42,6 +43,7 @@ export class MemberComponent implements OnInit, OnDestroy {
 	}
  onLogout(){
 	 console.log("logout called");
+	 this.accountService.logout();
    /* this.store.dispatch(
       new actions.LogoutRequestedAction({user:this.getToken()})
     );*/

@@ -5,9 +5,10 @@ import {StoreModule} from "@ngrx/store";
 import { AppComponent } from './app.component';
 import {CoreModule} from  './core/core.module';
 import { HttpModule } from '@angular/http';
-
+import { EnvServiceProvider } from './env.service.provider';
 import {PublicComponent} from './public/public.component';
 import {MemberComponent} from './member/member.component';
+
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import {MemberComponent} from './member/member.component';
 	 CoreModule.forRoot(),
 	 StoreModule.provideStore(appReducer),
   ],
-  providers: [],
+   providers: [EnvServiceProvider/*,SessionStorageService*/],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,7 +1,7 @@
 import { LoggedInActionTypes } from './logged-in.actions';
 import { Action } from '@ngrx/store';
 
-const initalState = true;
+const initalState = false;
 
 export const loggedInReducer = (state = initalState, action: Action): boolean => {
     switch (action.type) {
@@ -11,7 +11,7 @@ export const loggedInReducer = (state = initalState, action: Action): boolean =>
 
         case LoggedInActionTypes.NOT_LOGGED_IN:
 		console.log("not logged in");
-            return true;
+            return false;
 
         default:
 		console.log("default");

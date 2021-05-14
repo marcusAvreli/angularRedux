@@ -1,5 +1,6 @@
 import {NgModule, Optional, SkipSelf,ModuleWithProviders} from '@angular/core';
 import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AuthTokenService } from './auth-token/auth-token.service';
@@ -12,8 +13,8 @@ import { AccountService } from './account/account.service';
 
 @NgModule({
 	imports: [FormsModule,ReactiveFormsModule],
-	exports: [LoginComponent],
-	declarations: [LoginComponent],
+	exports: [LoginComponent,RegisterComponent],
+	declarations: [LoginComponent,RegisterComponent],
 	providers: []
 })
 export class CoreModule {

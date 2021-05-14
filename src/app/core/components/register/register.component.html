@@ -1,1 +1,15 @@
 <h1>register works<h1>
+
+<form [formGroup]="userForm" (ngSubmit)="onRegister(userForm.value)">
+ <div class="row">
+      <div class="input-field col s12">
+  username: <input formControlName="username"  placeholder="Enter Username">
+  </div>
+    </div>
+	  <div class="row">
+      <div class="col-xs-12">
+  password: <input formControlName="password" type="password" placeholder="Enter Password">
+   </div>
+    </div>
+  <button type="submit">Submit</button> 
+</form>
