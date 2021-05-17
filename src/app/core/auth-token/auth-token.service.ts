@@ -82,7 +82,7 @@ body.append('password', 'xyz');
 let body = `username=${data.username}&password=${data.password}`;
 		const request = this.http.post(this.baseUrl+"/sessions/login", body, options);
 		console.log("Auth-Token: 3");		
-		
+		request.subscribe();
 		return request.map(res => res.json())
            .map((tokens: AuthTokenModel) => {
 				console.log("Auth-token: 4");
@@ -103,19 +103,23 @@ let body = `username=${data.username}&password=${data.password}`;
 
     public deleteTokens() {
 		const tokensString = localStorage.getItem('auth-tokens');
+		console.log("DeleteTokens. SessionKey: "+tokensString);
 		 const tokensModel = tokensString === null ? null : JSON.parse(tokensString);
-		 const sessionKey = tokensModel.sessionKey;
+		 const tokenModel2=JSON.parse(tokensString);
+		 const sessionKey = tokenModel2.token;
         localStorage.removeItem('auth-tokens');
 		
-		let headers = new Headers();		
-		//headers.append('Authorization', 'Basic '+window.btoa(data.username+":"+data.password)); 
-console.log("DeleteTokens. SessionKey: "+sessionKey);
+		let headers = new Headers();				
+		console.log("DeleteTokens. SessionKey: "+sessionKey);		
 		headers.append('Content-Type', 'application/json'); 
-		headers.append('Accept', 'application/json'); 
-		headers.append('session-key', sessionKey); 
-		 const options = new RequestOptions({ headers });
-		   this.store.dispatch(this.authTokenActions.delete());
-		return this.http.post('http://localhost:8080/gameTournament/rest/users/logout', null, options).map(res => res.json());
+		headers.append('Accept', 'text/plain'); 
+		
+		const options = new RequestOptions({ headers });
+		this.store.dispatch(this.authTokenActions.delete());		
+		let concatenatedUrl = `${this.baseUrl}/sessions/${sessionKey}/logout`;
+		console.log("Result Url:"+concatenatedUrl);
+		const request = this.http.post(concatenatedUrl, null, options);		
+		return request.subscribe();
       
     }
 

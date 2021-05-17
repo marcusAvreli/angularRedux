@@ -71,7 +71,7 @@ baseUrl:string;
         this.store.dispatch(this.loggedInAction.notLoggedIn());
         this.store.dispatch(this.authTokenActions.delete());
        // this.store.dispatch(this.profileActions.delete());
-console.log("account.service:show login");
+		console.log("account.service:show login");
         //this.utilityService.navigateToSignIn();
     }
 
